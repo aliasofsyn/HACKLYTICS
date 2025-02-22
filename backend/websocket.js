@@ -1,8 +1,7 @@
 const WebSocketServer = require('ws');
 
-
-function initalizeWebSocket(server){
-    const wss = WebSocketServer.Server({ port: server });
+function initializeWebSocket(server){
+    const wss = new WebSocketServer.Server({ server });
 
     wss.on('connection', (ws) =>{
       console.log("Connected");
@@ -20,4 +19,4 @@ function initalizeWebSocket(server){
 
     })
 }
-module.exports = {initalizeWebSocket} 
+module.exports = {initializeWebSocket} 

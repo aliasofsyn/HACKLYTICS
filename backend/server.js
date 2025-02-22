@@ -2,9 +2,11 @@
 // server.js
 
 const axios = require('axios');
-const express = require('express'); 
+const express = require('express');
+const http = require('http'); 
 const app = express();
-const { initWebSocket } = require('./websocket')
+const { initializeWebSocket } = require('./websocket.js')
+console.log("imported it just fine");
 require('dotenv').config();
 const port = process.env.PORT || 3001;
 
@@ -25,10 +27,12 @@ app.get('/api', (req, res) => {
   });
 });
 
+const server = http.createServer(app)
 
-initWebSocket(8000);
+initializeWebSocket(server);
+console.log("used it");
 
 // Start the server
-app.listen(port, () => {
+server.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
