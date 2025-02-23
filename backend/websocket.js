@@ -7,7 +7,7 @@ function initializeWebSocket(server){
       console.log("Connected");
       
       ws.on('message', (message) => {
-        console.log('Received message:', message);
+        console.log('Received message:', message.toString());
         
       // Process the message (for example, echo it back)
         ws.send(`Server received: ${message}`);
