@@ -5,8 +5,8 @@ const axios = require('axios');
 const express = require('express');
 const http = require('http'); 
 const app = express();
+const cors = require('cors');
 const { initializeWebSocket } = require('./websocket.js')
-console.log("imported it just fine");
 require('dotenv').config();
 const port = process.env.PORT || 3001;
 
@@ -26,6 +26,24 @@ app.get('/api', (req, res) => {
     status: 'success'
   });
 });
+
+//handles the data from the flight info form
+app.post("/api/flightInfo", (req, res) => {
+  const formData = req.body;
+  
+  // Convert data to a string that can be written into a JS file
+  const fileContent = `const formData = ${JSON.stringify(formData, null, 2)};\n\nexport default formData;`;
+  
+  // Save data to a .js file
+  fs.writeFile("formData.js", fileContent, (err) => {
+    if (err) {
+      console.error("Error saving data:", err);
+      return res.status(500).json({ message: "Error saving data" });
+    }
+    console.log("Form data saved successfully!");
+    res.json({ message: "Form data saved!" });
+  });
+  })
 
 const server = http.createServer(app)
 
