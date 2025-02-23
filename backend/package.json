@@ -1,0 +1,32 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "backend folder of Wingman",
+  "main": "server.js",
+  "scripts": {
+    "test": "test",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aliasofsyn/HACKLYTICS.git"
+  },
+  "keywords": [
+    "none"
+  ],
+  "author": "Bharath Ram",
+  "license": "UNLICENSED",
+  "bugs": {
+    "url": "https://github.com/aliasofsyn/HACKLYTICS/issues"
+  },
+  "homepage": "https://github.com/aliasofsyn/HACKLYTICS#readme",
+  "dependencies": {
+    "axios": "^1.7.9",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "http": "^0.0.1-security",
+    "mongoose": "^8.10.1",
+    "websocket": "^1.0.35",
+    "ws": "^8.18.1"
+  }
+}
