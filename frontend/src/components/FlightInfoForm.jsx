@@ -10,8 +10,9 @@ The form has two options for finding a flight:
 - Form requires either a valid flight number or all three other fields filled.
 */
 
-
 import { useState, useEffect } from "react";
+import axios from 'axios';
+import cors from 'cors';
 import "../styles.css";
 
 function FlightInfoForm() {
@@ -52,8 +53,8 @@ function FlightInfoForm() {
       // TODO: Connect to backend API or handle submission logic
 
       try {
-        formData = {"flightNumber": flightNumber, "flightTime": flightTime, "currentAirportCode": currentAirportCode, "destinationAirportCode": destinationAirportCode};
-        await axios.post("http://localhost:3001/flightInfo", formData, {
+        const formData = {"flightNumber": flightNumber, "flightTime": flightTime, "currentAirportCode": currentAirportCode, "destinationAirportCode": destinationAirportCode};
+        await axios.post("http://localhost:3001/api/flightInfo", formData, {
           headers: { "Content-Type": "application/json" },
         });
   
