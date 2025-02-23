@@ -62,7 +62,7 @@ function FlightInfoForm() {
     }
   };
   return (
-    <div className="min-h-screen flex items-center justify-center bg-tealCustom py-10 px-4">
+    <div className="min-h-screen bg-red-500">
         <form
             onSubmit={handleSubmit}
             className="w-full max-w-2xl bg-white border-4 border-white rounded-lg shadow-md p-6"
