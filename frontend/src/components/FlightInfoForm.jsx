@@ -1,12 +1,12 @@
 /* 
 The form has two options for finding a flight:
 1. **Flight Number**: Enter a flight number.
-2. **Time, Destination, and Airport Code**: Enter all three fields together.
+2. **Time, Current Airport Code, and Destination Airport Code**: Enter all three fields together.
 
 **Error Handling:**
 - If the user enters a flight number, the other fields are disabled.
-- If the user enters time, destination, or airport code, the flight number field is disabled.
-- Airport code must be exactly three letters.
+- If the user enters time, current airport code, or destination airport code, the flight number field is disabled.
+- Both airport codes must be exactly three letters.
 - Form requires either a valid flight number or all three other fields filled.
 */
 
@@ -16,22 +16,28 @@ import "../styles.css";
 function FlightInfoForm() {
   const [flightNumber, setFlightNumber] = useState("");
   const [flightTime, setFlightTime] = useState("");
-  const [destination, setDestination] = useState("");
-  const [airportCode, setAirportCode] = useState("");
+  const [currentAirportCode, setCurrentAirportCode] = useState("");
+  const [destinationAirportCode, setDestinationAirportCode] = useState("");
   const [errors, setErrors] = useState({});
 
   const isFlightNumberMode = flightNumber.trim() !== "";
-  const isSecondOptionMode = flightTime !== "" && destination.trim() !== "" && airportCode.trim() !== "";
+  const isSecondOptionMode =
+    flightTime !== "" && currentAirportCode.trim() !== "" && destinationAirportCode.trim() !== "";
 
   const validateForm = () => {
     const newErrors = {};
 
     if (!isFlightNumberMode && !isSecondOptionMode) {
-      newErrors.general = "Please enter either a flight number or fill in time, destination, and airport code.";
+      newErrors.general = "Please enter either a flight number or fill in time, current airport code, and destination airport code.";
     }
 
-    if (!isFlightNumberMode && airportCode.trim() && !/^[a-zA-Z]{3}$/.test(airportCode)) {
-      newErrors.airportCode = "Airport code must be exactly 3 letters.";
+    if (!isFlightNumberMode) {
+      if (currentAirportCode.trim() && !/^[a-zA-Z]{3}$/.test(currentAirportCode)) {
+        newErrors.currentAirportCode = "Current airport code must be exactly 3 letters.";
+      }
+      if (destinationAirportCode.trim() && !/^[a-zA-Z]{3}$/.test(destinationAirportCode)) {
+        newErrors.destinationAirportCode = "Destination airport code must be exactly 3 letters.";
+      }
     }
 
     setErrors(newErrors);
@@ -41,7 +47,7 @@ function FlightInfoForm() {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (validateForm()) {
-      console.log("Submitted:", { flightNumber, flightTime, destination, airportCode });
+      console.log("Submitted:", { flightNumber, flightTime, currentAirportCode, destinationAirportCode });
       // TODO: Connect to backend API or handle submission logic
     }
   };
@@ -50,16 +56,16 @@ function FlightInfoForm() {
   useEffect(() => {
     if (isFlightNumberMode) {
       setFlightTime("");
-      setDestination("");
-      setAirportCode("");
+      setCurrentAirportCode("");
+      setDestinationAirportCode("");
     }
   }, [flightNumber]);
 
   useEffect(() => {
-    if (flightTime || destination || airportCode) {
+    if (flightTime || currentAirportCode || destinationAirportCode) {
       setFlightNumber("");
     }
-  }, [flightTime, destination, airportCode]);
+  }, [flightTime, currentAirportCode, destinationAirportCode]);
 
   return (
     <div className="container">
@@ -77,7 +83,7 @@ function FlightInfoForm() {
             value={flightNumber}
             onChange={(e) => setFlightNumber(e.target.value)}
             placeholder="e.g., AA123"
-            disabled={flightTime || destination || airportCode}
+            disabled={flightTime || currentAirportCode || destinationAirportCode}
           />
         </div>
 
@@ -93,32 +99,34 @@ function FlightInfoForm() {
           />
         </div>
 
-        {/* Destination Input */}
+        {/* Current Airport Code Input */}
         <div className="input-group">
-          <label htmlFor="destination">Destination City</label>
+          <label htmlFor="currentAirportCode">Current Airport Code</label>
           <input
             type="text"
-            id="destination"
-            value={destination}
-            onChange={(e) => setDestination(e.target.value)}
-            placeholder="e.g., New York"
+            id="currentAirportCode"
+            value={currentAirportCode}
+            onChange={(e) => setCurrentAirportCode(e.target.value.toUpperCase())}
+            placeholder="e.g., ATL"
+            maxLength={3}
             disabled={isFlightNumberMode}
           />
+          {errors.currentAirportCode && <p className="error">{errors.currentAirportCode}</p>}
         </div>
 
-        {/* Airport Code Input */}
+        {/* Destination Airport Code Input */}
         <div className="input-group">
-          <label htmlFor="airportCode">Airport Code</label>
+          <label htmlFor="destinationAirportCode">Destination Airport Code</label>
           <input
             type="text"
-            id="airportCode"
-            value={airportCode}
-            onChange={(e) => setAirportCode(e.target.value.toUpperCase())}
+            id="destinationAirportCode"
+            value={destinationAirportCode}
+            onChange={(e) => setDestinationAirportCode(e.target.value.toUpperCase())}
             placeholder="e.g., JFK"
             maxLength={3}
             disabled={isFlightNumberMode}
           />
-          {errors.airportCode && <p className="error">{errors.airportCode}</p>}
+          {errors.destinationAirportCode && <p className="error">{errors.destinationAirportCode}</p>}
         </div>
 
         <button type="submit" className="button">Search Flight</button>
